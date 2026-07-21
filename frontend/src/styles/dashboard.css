@@ -46,3 +46,36 @@
     flex: 1;
     box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #1e293b;
+    color: white;
+}
+
+form {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input,
+button {
+    padding: 10px;
+}
+
+button {
+    cursor: pointer;
+}
