@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import incomeRoutes from "./routes/incomeRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
     });
 });
 app.use("/api/income", incomeRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 const PORT = process.env.PORT || 5000;
 

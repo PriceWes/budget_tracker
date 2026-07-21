@@ -1,8 +1,154 @@
+import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
- export default function Expenses() {
+import api from "../services/api";
+
+export default function Expense() {
+    const [expenses, setExpenses] = useState([]);
+    const [form, setForm] = useState({
+        category: "",
+        amount: "",
+        description: "",
+    });
+
+    const [editingId, setEditingId] = useState(null);
+
+    const loadExpense = async () => {
+        try {
+            const res = await api.get("/expenses");
+            console.log(res.data);
+            setExpenses(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+      useEffect(() => {
+        loadExpense();
+    }, []);
+
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const resetForm = () => {
+        setForm({
+            category: "",
+            amount: "",
+            description: "",
+        });
+        setEditingId(null);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            if(editingId) {
+                await api.put(`/expenses/${editingId}`, form);
+            } else {
+                await api.post("/expenses", form);
+            }
+
+            resetForm();
+            loadExpense();
+        } catch (error) {
+            alert(error.response?.data?.message || "OPeration failed");
+        }
+    };
+
+    const handleEdit = (expense) => {
+        setEditingId(expense.id);
+
+        setForm({
+            category: expense.category,
+            amount: expense.amount,
+            description: expense.description || "",
+        });
+    };
+
+    const handleDelete = async (id) => {
+        if (!window.confirm("Delete this expense?")) return;
+        await api.delete(`/expenses/${id}`);
+        loadExpense();
+    };
+
+    const totalExpense = expenses.reduce(
+        (sum, item) => sum + item.amount,
+        0
+    );
+
     return (
         <DashboardLayout>
-            <h1>Expenses</h1>
+            <h1>Expense Management</h1>
+            <h2>Total Expense: KES {totalExpense}</h2>
+            <form onSubmit={handleSubmit}>
+                <input
+                    name="category"
+                    placeholder="Expense Category"
+                    value={form.category}
+                    onChange={handleChange}
+                    required
+                />
+
+                <input 
+                    type="number"
+                    name="amount"
+                    placeholder="Amount"
+                    value={form.amount}
+                    onChange={handleChange}
+                    required
+                />
+
+                <input
+                    name="description"
+                    placeholder="Description"
+                    value={form.description}
+                    onChange={handleChange}
+                />
+
+                <button type="submit">
+                    {editingId ? "Update Expense" : "Add Expense"}
+                </button>
+            </form>
+            <table border="1" cellPadding={10}>
+                <thead>
+                    <tr>
+                        <th>category</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {expenses.map((expense) => (
+                        <tr key={expense.id}>
+                            <td>{expense.category}</td>
+                            <td>KES {expense.amount}</td>
+                            <td>{expense.description}</td>
+                            <td>
+                                {new Date(expense.date).toLocaleDateString()}
+                            </td>
+                            <td>
+                                <button
+                                    onClick={() => handleEdit(expense)}
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    onClick={() => handleDelete(expense.id)}
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </DashboardLayout>
     );
- }
+}

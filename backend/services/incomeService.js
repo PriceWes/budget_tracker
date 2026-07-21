@@ -36,11 +36,10 @@ export const updateIncome = async (id, userId, data) => {
     });
 };
 
-export const deleteIncome = async (id, userId) => {
+export const deleteIncome = async (id) => {
     return await prisma.income.delete({
         where: {
             id,
-            userId,
         },
     });
 };

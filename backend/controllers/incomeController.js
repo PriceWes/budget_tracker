@@ -43,11 +43,21 @@ export const editIncome = async (req, res) => {
 };
 
 export const removeIncome = async (req, res) => {
-    await income.deleteIncome(
-        Number(req.params.id),
-        req.user.id
-    );
-    res.json({
-        message: "Income deleted",
-    });
+    try {
+        await incomeService.deleteIncome(
+            Number(req.params.id),
+            req.user.id
+        );
+
+        res.json({
+            message: "Income deleted",
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(400).json({
+            message: error.message,
+        });
+    }
 };
