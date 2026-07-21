@@ -1,15 +1,26 @@
-import { useAuth } from "../context/AuthContext";
+import DashboardLayout from "../components/DashboardLayout";
+import DashboardCard from "../components/DashboardCard";
 
 export default function Dashboard() {
-    const { user, logout } = useAuth();
-
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <h2>Welcome {user?.fullName}</h2>
-            <button onClick={logout}>
-                Logout
-            </button>
-        </div>
+        <DashboardLayout>
+            <h1> Dashboard</h1>
+            <div className="cards">
+                <DashboardCard
+                    title="Total Income"
+                    value="KES 0"
+                />
+
+                <DashboardCard
+                    title="Total Expenses"
+                    value="KES 0"
+                />
+
+                <DashboardCard
+                    title="Balance"
+                    value="KES 0"
+                />
+            </div>
+        </DashboardLayout>
     );
 }
