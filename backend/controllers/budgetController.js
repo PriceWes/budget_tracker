@@ -56,3 +56,16 @@ export const removeBudget = async (req, res) => {
         });
     }
 };
+
+export const budgetAnalysis = async (req, res) => {
+    try {
+        const analysis = await budgetService.getBudgetAnalysis(
+            req.user.id
+        );
+        res.json(analysis);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};

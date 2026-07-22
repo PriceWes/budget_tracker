@@ -85,13 +85,24 @@ export default function Expense() {
             <h1>Expense Management</h1>
             <h2>Total Expense: KES {totalExpense}</h2>
             <form onSubmit={handleSubmit}>
-                <input
-                    name="category"
-                    placeholder="Expense Category"
-                    value={form.category}
-                    onChange={handleChange}
-                    required
-                />
+                 <select
+    name="category"
+    value={form.category}
+    onChange={handleChange}
+    required
+>
+    <option value="">Expense Category</option>
+    <option value="Food">Food</option>
+    <option value="Transport">Transport</option>
+    <option value="Rent">Rent</option>
+    <option value="Utilities">Utilities</option>
+    <option value="Entertainment">Entertainment</option>
+    <option value="Healthcare">Healthcare</option>
+    <option value="Education">Education</option>
+    <option value="Shopping">Shopping</option>
+    <option value="Savings">Savings</option>
+    <option value="Other">Other</option>
+</select>
 
                 <input 
                     type="number"

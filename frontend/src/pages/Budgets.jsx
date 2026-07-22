@@ -23,6 +23,7 @@ export default function Budget() {
 
     useEffect(() => {
         loadBudgets();
+        loadAnalysis();
     }, []);
 
     const handleChange = (e) => {
@@ -51,6 +52,7 @@ export default function Budget() {
             }
             resetForm();
             loadBudgets();
+            loadAnalysis();
         } catch (error) {
             alert(error.response?.data?.message || "Operation failed");
         }
@@ -71,8 +73,19 @@ export default function Budget() {
             if (!window.confirm("Delete this budget?")) return;
             await api.delete(`/budgets/${id}`);
             loadBudgets();
+            loadAnalysis();
         } catch (error) {
             alert(error.response?.data?.message || "Delete failed");
+        }
+    };
+
+    const [analysis, setAnalysis] = useState([]);
+    const loadAnalysis = async () => {
+        try{
+            const res =await api.get("/budgets/analysis");
+            setAnalysis(res.data);
+        } catch (error){
+            console.error(error);
         }
     };
 
@@ -162,6 +175,36 @@ export default function Budget() {
                                 >
                                     Delete
                                 </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            <h2>Budget Analysis</h2>
+            <table border="1" cellPadding="10">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Budget</th>
+                        <th>Spent</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {analysis.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.category}</td>
+                            <td>KES {item.limit}</td>
+                            <td>KES {item.spent}</td>
+                            <td>KES {item.remaining}</td>
+                            <td>
+                                {item.remaining > item.limit * 0.2
+                                    ? "🟢 Good"
+                                    : item.remaining > 0
+                                    ? "🟡 Almost Full"
+                                    : "🔴 Over Budget"}
                             </td>
                         </tr>
                     ))}

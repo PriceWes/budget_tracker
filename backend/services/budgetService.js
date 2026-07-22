@@ -66,3 +66,37 @@ export const deleteBudget = async (id, userId) => {
         },
     });
 };
+
+export const getBudgetAnalysis = async (userId) => {
+    const budgets = await prisma.budget.findMany({
+        where: {
+            userId,
+        },
+    });
+
+    const analysis = [];
+    for (const budget of budgets) {
+        const expenses = await prisma.expense.findMany({
+            where: {
+                userId,
+                category: budget.category,
+            },
+        });
+
+        const spent = expenses.reduce(
+            (sum, expense) => sum + expense.amount,
+            0
+        );
+        analysis.push({
+            id: budget.id,
+            category: budget.category,
+            month: budget.month,
+            year: budget.year,
+            limit: budget.limit,
+            spent,
+            remaining: budget.limit - spent,
+        });
+    }
+
+    return analysis;
+}
