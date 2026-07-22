@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Income from "./pages/Income";
 import Expenses from "./pages/Expenses";
-import Budgets from "./pages/Budgets";
+import Budget from "./pages/Budgets";
 import Reports from "./pages/Reports";
 import Profile from "./pages/Profile";
 
@@ -48,7 +48,7 @@ function App() {
             path="/budgets"
             element={
               <ProtectedRoute>
-                <Budgets />
+                <Budget />
               </ProtectedRoute>
             }
           />

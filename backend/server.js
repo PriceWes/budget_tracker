@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import incomeRoutes from "./routes/incomeRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js";
+import budgetRoutes from "./routes/budgetRoutes.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/income", incomeRoutes);
 app.use("/api/expenses", expenseRoutes);
+app.use("/api/budgets", budgetRoutes);
 
 const PORT = process.env.PORT || 5000;
 
