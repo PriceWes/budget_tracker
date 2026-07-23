@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import DashboardCard from "../components/DashboardCard";
 import api from "../services/api";
+import { exportReportPDF } from "../utils/pdfExport";
+import { exportReportExcel } from "../utils/excelExport";
 
 export default function Reports() {
     const [summary, setSummary] = useState(null);
@@ -82,6 +84,31 @@ export default function Reports() {
                     value={`KES ${summary.balance.toLocaleString()}`}
                 />
             </div>
+            <div
+    style={{
+        display: "flex",
+        gap: "10px",
+        marginBottom: "20px",
+    }}
+>
+    <button
+        onClick={() => exportReportPDF(summary)}
+    >
+        Export PDF
+    </button>
+
+    <button
+        onClick={() => exportReportExcel(summary)}
+    >
+        Export Excel
+    </button>
+
+    <button
+        onClick={() => window.print()}
+    >
+        Print Report
+    </button>
+</div>
 
             <h2 style={{ marginTop: "30px"}}>
                 Budgets
