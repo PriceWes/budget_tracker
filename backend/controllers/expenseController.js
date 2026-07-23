@@ -21,7 +21,9 @@ export const getExpenses = async (req, res) => {
 
 export const getExpenseTotal = async (req, res) => {
     const total = await expenseService.totalExpense(req.user.id);
-    res.json({ total });
+    res.json({ 
+        total, 
+    });
 };
 
 export const editExpense = async (req, res) => {
@@ -53,4 +55,9 @@ export const removeExpense = async (req, res) => {
             message: error.message,
         });
     }
+};
+
+export const expenseCategories = async (req, res) => {
+    const data = await expenseService.expenseByCategory(req.user.id);
+    res.json(data);
 };

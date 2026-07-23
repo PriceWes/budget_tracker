@@ -75,3 +75,22 @@ export const totalExpense = async (userId) => {
         0
     );
 };
+
+export const expenseByCategory = async (userId) => {
+    const expenses = await prisma.expense.findMany({
+        where: {
+            userId,
+        },
+    });
+    const grouped = {};
+
+    expenses.forEach((expense) => {
+        grouped[expense.category] =
+            (grouped[expense.category] || 0) + expense.amount;
+    });
+
+    return Object.entries(grouped).map(([category, amount]) => ({
+        category,
+        amount,
+    }));
+};
