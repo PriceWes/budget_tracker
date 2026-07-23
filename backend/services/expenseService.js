@@ -11,14 +11,68 @@ export const createExpense = async (userId, data) => {
     });
 };
 
-export const getAllExpenses = async (userId) => {
-    return await prisma.expense.findMany({
-        where: {
-            userId,
+export const getAllExpenses = async (
+    userId,
+    search,
+    category,
+    startDate,
+    endDate,
+    sort
+) => {
+    const where = {
+        userId,
+    };
+
+    if (search) {
+        where.OR = [
+            {category: {
+                contains: search,
+                mode: "insensitive",
+            },
+        },{
+            description: {
+                contains: search,
+                mode: "insensitive",
+            },
         },
-        orderBy: {
-            date: "desc",
-        },
+        ];
+    }
+
+    if (category) {
+        where.category = category;
+    }
+    if (startDate && endDate) {
+        where.date = {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+        };
+    }
+
+    let orderBy = {
+        date: "desc",
+    };
+
+    if (sort === "oldest") {
+        orderBy = {
+            date: "asc",
+        };
+    }
+
+    if (sort === "highest") {
+        orderBy = {
+            amount: "desc",
+        };
+    }
+
+    if (sort === "lowest") {
+        orderBy = {
+            amount: "asc",
+        };
+    }
+
+    return prisma.expense.findMany({
+        where,
+        orderBy,
     });
 };
 

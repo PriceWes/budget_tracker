@@ -15,7 +15,21 @@ export const addExpense = async (req, res) => {
 };
 
 export const getExpenses = async (req, res) => {
-    const expenses = await expenseService.getAllExpenses(req.user.id);
+    const {
+        search,
+        category,
+        startDate,
+        endDate,
+        sort,
+    } = req.query;
+    const expenses = await expenseService.getAllExpenses(
+        req.user.id,
+        search,
+        category,
+        startDate,
+        endDate,
+        sort
+    );
     res.json(expenses);
 };
 

@@ -9,12 +9,26 @@ export default function Expense() {
         amount: "",
         description: "",
     });
+    const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("");
+    const [sort, setSort] = useState("newest");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
 
     const [editingId, setEditingId] = useState(null);
 
     const loadExpense = async () => {
         try {
-            const res = await api.get("/expenses");
+            const res = await api.get("/expenses",{
+                params: {
+                    search,
+                    category,
+                    sort,
+                    startDate,
+                    endDate,
+                },
+            });
             console.log(res.data);
             setExpenses(res.data);
         } catch (error) {
@@ -24,7 +38,13 @@ export default function Expense() {
 
       useEffect(() => {
         loadExpense();
-    }, []);
+    }, [
+        search,
+        category,
+        sort,
+        startDate,
+        endDate,
+    ]);
 
     const handleChange = (e) => {
         setForm({
@@ -124,6 +144,53 @@ export default function Expense() {
                     {editingId ? "Update Expense" : "Add Expense"}
                 </button>
             </form>
+            <div className="filters">
+                <input
+                    placeholder="Search..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                />
+
+                <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                />
+
+                <select
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                >
+                    <otpion value="newest">Newest</otpion>
+                    <option value="oldest">Oldest</option>
+                    <option value="highest">Highest Amount</option>
+                    <option value="lowest">Lowest Amount</option>
+
+                </select>
+            </div>
+
+
             <table border="1" cellPadding={10}>
                 <thead>
                     <tr>
