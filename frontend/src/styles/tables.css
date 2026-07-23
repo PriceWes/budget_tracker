@@ -1,0 +1,41 @@
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+th{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+th,
+td{
+
+    padding:14px;
+
+    text-align:left;
+
+}
+
+tr:nth-child(even){
+
+    background:#f8f9fc;
+
+}
+
+tr:hover{
+
+    background:#eef3ff;
+
+}
