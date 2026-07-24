@@ -19,3 +19,9 @@ input,
 select{
     outline:none;
 }
+
+button:disabled {
+    background: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

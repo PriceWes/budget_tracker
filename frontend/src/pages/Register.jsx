@@ -11,15 +11,51 @@ export default function Register() {
         password: "",
     });
 
+    const validatePassword = (password) => {
+    const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#^()_\-+=]).{8,}$/;
+
+    return regex.test(password);
+};
+
+const [passwordValid, setPasswordValid] = useState(false);
+    
+
     const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value,
-        });
+
+    const updated = {
+        ...form,
+        [e.target.name]: e.target.value,
     };
+
+    setForm(updated);
+
+    if (e.target.name === "password") {
+        setPasswordValid(validatePassword(e.target.value));
+    }
+    {form.password && (
+    <p style={{ color: passwordValid ? "green" : "red" }}>
+        {passwordValid
+            ? "✓ Strong password"
+            : "Password does not meet the requirements"}
+    </p>
+)}
+};
+
+    
 
     const register = async (e) => {
         e.preventDefault();
+        if (!validatePassword(form.password)) {
+    return alert(
+        "Password must contain:\n\n" +
+        "• At least 8 characters\n" +
+        "• One uppercase letter\n" +
+        "• One lowercase letter\n" +
+        "• One number\n" +
+        "• One special character"
+    );
+}
         try {
             await api.post("/auth/register", form);
             alert("Registration successful");
@@ -52,7 +88,21 @@ export default function Register() {
                     onChange={handleChange}
                 />
 
-                <button type="submit">
+                <small style={{ color: "#666" }}>
+    Password must contain:
+    <br />
+    • Minimum 8 characters
+    <br />
+    • One uppercase letter
+    <br />
+    • One lowercase letter
+    <br />
+    • One number
+    <br />
+    • One special character
+</small>
+
+                <button type="submit" disabled={!passwordValid}>
                     Register
                 </button>
             </form>

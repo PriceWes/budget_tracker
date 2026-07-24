@@ -26,6 +26,11 @@ export default function Sidebar() {
             <Link to="/profile">
                 <FaUser /> Profile
             </Link>
+
+            <Link to="/dashboard">
+                 Dashboard
+            </Link>
         </div>
+
     );
 }

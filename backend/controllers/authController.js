@@ -2,8 +2,15 @@ import {
     registerUser,
     loginUser
 } from "../services/authService.js";
+import { validatePassword } from "../utils/passwordValidator.js";
 
 export const register = async (req, res) => {
+    if (!validatePassword(req.body.password)){
+        return res.status(400).json({
+            message: 
+                "Password must be at least 8 character and include uppercase, lowercase, number and special character "
+        });
+    }
     try {
         const result = await registerUser(req.body);
         res.status(201).json(result);
