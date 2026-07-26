@@ -17,11 +17,15 @@ model User {
   fullName String
   email String @unique
   password String
-  createdAt DateTime @default(now())
+
+  isVerified Boolean  @default(false)
+  verificationToken String?
 
   incomes Income[]
   expenses Expense[]
   budgets Budget[]
+
+  createdAt DateTime @default(now())
 }
 
 model Income {

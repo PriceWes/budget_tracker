@@ -58,7 +58,10 @@ const [passwordValid, setPasswordValid] = useState(false);
 }
         try {
             await api.post("/auth/register", form);
-            alert("Registration successful");
+            alert(
+                "Registration successful.\n\nPlease check your email and click the verification link before logging in."
+            );
+
             navigate("/login");
         } catch (error) {
             alert(error.response?.data?.message || "Registration failed");
