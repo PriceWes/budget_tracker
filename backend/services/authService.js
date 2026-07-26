@@ -11,7 +11,7 @@ export const registerUser = async (data) => {
     });
 
     if (exists) {
-        throw new Error("Email already exists");
+        throw new Error("An account with this email already exists.");
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -19,9 +19,8 @@ export const registerUser = async (data) => {
     const user = await prisma.user.create({
         data: {
             fullName: data.fullName,
-            email: data.email,
+            email: data.email.toLowerCase().trim(),
             password: hashedPassword,
-
             isVerified: false,
         },
     });
@@ -33,12 +32,12 @@ export const loginUser = async (email, password) => {
 
     const user = await prisma.user.findUnique({
         where: {
-            email,
+            email: email.toLowerCase().trim(),
         },
     });
 
     if (!user) {
-        throw new Error("Invalid credentials");
+        throw new Error("Invalid email or password.");
     }
 
     const match = await bcrypt.compare(
@@ -47,7 +46,7 @@ export const loginUser = async (email, password) => {
     );
 
     if (!match) {
-        throw new Error("Invalid credentials");
+        throw new Error("Invalid email or password.");
     }
 
     if (!user.isVerified) {
@@ -58,6 +57,12 @@ export const loginUser = async (email, password) => {
 
     return {
         token: generateToken(user.id),
-        user,
+        user: {
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+            isVerified: user.isVerified,
+            createdAt: user.createdAt,
+        },
     };
 };

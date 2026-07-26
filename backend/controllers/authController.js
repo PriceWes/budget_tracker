@@ -13,26 +13,26 @@ export const register = async (req, res) => {
 
     if (!validatePassword(req.body.password)) {
         return res.status(400).json({
-            message:
-                "Password must be at least 8 characters long and include uppercase, lowercase, number and special character.",
+            message: "Password must be at least 8 characters long and include uppercase, lowercase, number and special character.",
         });
     }
 
+    req.body.email = req.body.email.toLowerCase().trim();
+
     try {
 
-        // Create user
         const user = await registerUser(req.body);
 
-        // Generate verification token
         const verificationToken = jwt.sign(
-            { email: user.email },
+            {
+                email: user.email,
+            },
             process.env.JWT_SECRET,
             {
                 expiresIn: "1d",
             }
         );
 
-        // Save token
         await prisma.user.update({
             where: {
                 id: user.id,
@@ -42,24 +42,20 @@ export const register = async (req, res) => {
             },
         });
 
-        // Verification link
         const verificationLink =
             `${process.env.CLIENT_URL}/verify/${verificationToken}`;
 
-        // Send email
+        console.log(`Sending verification email to ${user.email}`);
+
         await sendEmail(
             user.email,
             "Verify your Budget Tracker Account",
             `
             <h2>Welcome to Budget Tracker</h2>
 
-            <p>
-                Thank you for registering.
-            </p>
+            <p>Thank you for registering.</p>
 
-            <p>
-                Click the button below to verify your email.
-            </p>
+            <p>Please click the button below to verify your account.</p>
 
             <a
                 href="${verificationLink}"
@@ -67,9 +63,10 @@ export const register = async (req, res) => {
                     display:inline-block;
                     padding:12px 20px;
                     background:#2563eb;
-                    color:white;
+                    color:#ffffff;
                     text-decoration:none;
-                    border-radius:5px;
+                    border-radius:6px;
+                    font-weight:bold;
                 "
             >
                 Verify Email
@@ -79,17 +76,22 @@ export const register = async (req, res) => {
             `
         );
 
+        console.log("Verification email sent successfully.");
+
         res.status(201).json({
-            message:
-                "Registration successful. Please check your email to verify your account.",
+            message: "Registration successful. Please check your email to verify your account.",
         });
 
     } catch (error) {
-        res.status(400).json({
+
+        console.error("Registration Error:", error);
+
+        res.status(500).json({
             message: error.message,
         });
 
     }
+
 };
 
 export const login = async (req, res) => {
@@ -101,15 +103,18 @@ export const login = async (req, res) => {
             req.body.password
         );
 
-        res.json(result);
+        res.status(200).json(result);
 
     } catch (error) {
+
+        console.error("Login Error:", error);
 
         res.status(401).json({
             message: error.message,
         });
 
     }
+
 };
 
 export const verifyEmail = async (req, res) => {
@@ -129,8 +134,12 @@ export const verifyEmail = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
-                message: "User not found",
+                message: "User not found.",
             });
+        }
+
+        if (user.isVerified) {
+            return res.redirect(`${process.env.CLIENT_URL}/login`);
         }
 
         await prisma.user.update({
@@ -143,9 +152,13 @@ export const verifyEmail = async (req, res) => {
             },
         });
 
+        console.log(`${user.email} has verified their account.`);
+
         res.redirect(`${process.env.CLIENT_URL}/login`);
 
     } catch (error) {
+
+        console.error("Verification Error:", error);
 
         res.status(400).json({
             message: "Invalid or expired verification link.",
