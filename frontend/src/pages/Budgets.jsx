@@ -145,6 +145,7 @@ export default function Budget() {
                     {editingId ? "Update Budget" : "Create Budget"}
                 </button>
             </form>
+            <div className="table-container">
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -165,12 +166,14 @@ export default function Budget() {
 
                             <td>
                                 <button
+                                    className="edit-btn"
                                     onClick={() => handleEdit(budget)}
                                 >
                                     Edit
                                 </button>
 
                                 <button 
+                                    className="delete-btn"
                                     onClick={() => handleDelete(budget.id)}
                                 >
                                     Delete
@@ -180,8 +183,10 @@ export default function Budget() {
                     ))}
                 </tbody>
             </table>
+            </div>
 
             <h2>Budget Analysis</h2>
+            <div className="table-container">
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -210,6 +215,7 @@ export default function Budget() {
                     ))}
                 </tbody>
             </table>
+            </div>
         </DashboardLayout>
     );
 }

@@ -144,53 +144,82 @@ export default function Expense() {
                     {editingId ? "Update Expense" : "Add Expense"}
                 </button>
             </form>
-            <div className="filters">
-                <input
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                >
-                    <option value="">All Categories</option>
-                    <option value="Food">Food</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Utilities">Utilities</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Education">Education</option>
-                    <option value="Shopping">Shopping</option>
-                    <option value="Savings">Savings</option>
-                    <option value="Other">Other</option>
-                </select>
-                <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                />
 
-                <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                />
+             <div className="filter-card">
+    <div className="filter-header">
+        <h3>Filter Expenses</h3>
 
-                <select
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value)}
-                >
-                    <otpion value="newest">Newest</otpion>
-                    <option value="oldest">Oldest</option>
-                    <option value="highest">Highest Amount</option>
-                    <option value="lowest">Lowest Amount</option>
+        <button
+            className="clear-filter-btn"
+            onClick={() => {
+                setSearch("");
+                setCategory("");
+                setStartDate("");
+                setEndDate("");
+                setSort("newest");
+            }}
+        >
+            Clear Filters
+        </button>
+    </div>
 
-                </select>
-            </div>
+    <div className="filters">
+        <div className="filter-group">
+            <label>Category</label>
+            <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+            >
+                <option value="">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Education">Education</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Savings">Savings</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
 
+        <div className="filter-group">
+            <label>From</label>
+            <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+            />
+        </div>
 
+        <div className="filter-group">
+            <label>To</label>
+            <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+            />
+        </div>
+
+        <div className="filter-group">
+            <label>Sort By</label>
+            <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+            >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="highest">Highest Amount</option>
+                <option value="lowest">Lowest Amount</option>
+            </select>
+        </div>
+
+    </div>
+</div>
+          
+
+            <div className="table-container">
             <table border="1" cellPadding={10}>
                 <thead>
                     <tr>
@@ -212,12 +241,14 @@ export default function Expense() {
                             </td>
                             <td>
                                 <button
+                                    className="edit-btn"
                                     onClick={() => handleEdit(expense)}
                                 >
                                     Edit
                                 </button>
 
                                 <button
+                                    className="delete-btn"
                                     onClick={() => handleDelete(expense.id)}
                                 >
                                     Delete
@@ -227,6 +258,7 @@ export default function Expense() {
                     ))}
                 </tbody>
             </table>
+            </div>
         </DashboardLayout>
     );
 }

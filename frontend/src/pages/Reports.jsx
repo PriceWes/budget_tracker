@@ -113,7 +113,8 @@ export default function Reports() {
             <h2 style={{ marginTop: "30px"}}>
                 Budgets
             </h2>
-
+            
+            <div className="table-container">
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -135,10 +136,12 @@ export default function Reports() {
                     ))}
                 </tbody>
             </table>
+            </div>
 
             <h2 style={{ marginTop: "40px"}}>
                 Budget Performance
             </h2>
+            <div className="table-container">
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -166,6 +169,7 @@ export default function Reports() {
                     ))}
                 </tbody>
             </table>
+            </div>
         </DashboardLayout>
     );
   

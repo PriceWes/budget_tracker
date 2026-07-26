@@ -112,6 +112,7 @@ export default function Income() {
                     {editingId ? "Update Income" : "Add Income"}
                 </button>
             </form>
+            <div className="table-container">
             <table border="1" cellPadding={10}>
                 <thead>
                     <tr>
@@ -133,12 +134,14 @@ export default function Income() {
                             </td>
                             <td>
                                 <button
+                                    className="edit-btn"
                                     onClick={() => handleEdit(income)}
                                 >
                                     Edit
                                 </button>
 
                                 <button
+                                    className="delete-btn"
                                     onClick={() => handleDelete(income.id)}
                                 >
                                     Delete
@@ -148,6 +151,7 @@ export default function Income() {
                     ))}
                 </tbody>
             </table>
+            </div>
         </DashboardLayout>
     );
 }
