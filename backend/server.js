@@ -10,6 +10,17 @@ import reportRoutes from "./routes/reportRoutes.js";
 dotenv.config();
 
 const app = express();
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://budget-tracker-ashy-pi.vercel.app"
+];
+
+app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+    })
+);
 
 app.use(cors());
 app.use(express.json());
