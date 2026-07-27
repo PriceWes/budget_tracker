@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (to, subject, html) => {
     await transporter.sendMail({
-        from: `"Budget Tracker" <${process.env.EMAIL_USER}>`,
+        from: `"Budget Tracker" <${process.env.EMAIL_FROM}>`,
         to,
         subject,
         html,
