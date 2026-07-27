@@ -21,7 +21,6 @@ export const registerUser = async (data) => {
             fullName: data.fullName,
             email: data.email.toLowerCase().trim(),
             password: hashedPassword,
-            isVerified: false,
         },
     });
 
@@ -49,11 +48,6 @@ export const loginUser = async (email, password) => {
         throw new Error("Invalid email or password.");
     }
 
-    if (!user.isVerified) {
-        throw new Error(
-            "Please verify your email before logging in."
-        );
-    }
 
     return {
         token: generateToken(user.id),
@@ -61,7 +55,6 @@ export const loginUser = async (email, password) => {
             id: user.id,
             fullName: user.fullName,
             email: user.email,
-            isVerified: user.isVerified,
             createdAt: user.createdAt,
         },
     };
