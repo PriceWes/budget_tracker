@@ -53,13 +53,13 @@ const [passwordValid, setPasswordValid] = useState(false);
         "• One uppercase letter\n" +
         "• One lowercase letter\n" +
         "• One number\n" +
-        "• One special character"
+        "• One special character\n"
     );
 }
         try {
             await api.post("/auth/register", form);
             alert(
-                "Registration successful.\n\nPlease check your email and click the verification link before logging in."
+                "Registration successful."
             );
 
             navigate("/login");
