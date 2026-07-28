@@ -1,6 +1,7 @@
 import { FaBars,FaSignOutAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { notifyInfo } from "../utils/toast";
 
 export default function Navbar({ toggleSidebar }) {
 
@@ -8,6 +9,7 @@ export default function Navbar({ toggleSidebar }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        notifyInfo("LOgged out successfully");
         logout();
         navigate("/login");
     }

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link} from "react-router-dom";
 import api from "../services/api";
+import {
+    notifySuccess,
+    notifyError,
+} from "../utils/toast";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -58,13 +62,13 @@ const [passwordValid, setPasswordValid] = useState(false);
 }
         try {
             await api.post("/auth/register", form);
-            alert(
+            notifySuccess(
                 "Registration successful."
             );
 
             navigate("/login");
         } catch (error) {
-            alert(error.response?.data?.message || "Registration failed");
+            notifyError(error.response?.data?.message || "Registration failed");
         }
     };
 

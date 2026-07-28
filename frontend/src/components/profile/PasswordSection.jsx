@@ -1,5 +1,10 @@
 import { useState } from "react";
 import api from "../../services/api";
+import {
+    notifySuccess,
+    notifyError,
+    notifyWarning,
+} from "../utils/toast";
 
 export default function PasswordSection() {
     const [passwords, setPasswords] = useState({
@@ -20,7 +25,7 @@ export default function PasswordSection() {
             passwords.newPassword !==
             passwords.confirmPassword
         ) {
-            return alert("Passwords do not match");
+            return notifyWarning("Passwords do not match");
         }
 
         try {
@@ -30,7 +35,7 @@ export default function PasswordSection() {
                     newPassword: passwords.newPassword,
                 }
             );
-            alert("Password changed successfully");
+            notifySuccess("Password changed successfully");
 
             setPasswords({
                 currentPassword: "",
@@ -38,7 +43,7 @@ export default function PasswordSection() {
                 confirmPassword: "",
             })
         } catch (error) {
-            alert(error.response?.data?.message);
+            notifyError(error.response?.data?.message);
         }
     };
 

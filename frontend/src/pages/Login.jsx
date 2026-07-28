@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import {
+    notifySuccess,
+    notifyError,
+} from "../utils/toast";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -23,9 +27,12 @@ export default function Login() {
         try {
             const res = await api.post("/auth/login", form);
             login(res.data);
+            notifySuccess(
+                `Welcome back, ${res.data.user.fullName}!`
+            );
             navigate("/dashboard");
         } catch (error) {
-            alert(error.response?.data?.message || "Login failed");
+            notifyError(error.response?.data?.message || "Login failed");
         }
     };
 

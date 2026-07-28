@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import api from "../services/api";
+import {
+    notifyError,
+    notifyInfo,
+    notifySuccess,
+    
+} from "../utils/toast";
 
 export default function Income() {
     const [incomes, setIncomes] = useState([]);
@@ -52,9 +58,10 @@ export default function Income() {
             }
 
             resetForm();
+            notifySuccess("Income added Successfully");
             loadIncome();
         } catch (error) {
-            alert(error.response?.data?.message || "OPeration failed");
+            notifyError(error.response?.data?.message || "Operation failed");
         }
     };
 
@@ -66,11 +73,13 @@ export default function Income() {
             amount: income.amount,
             description: income.description || "",
         });
+        notifyInfo("Income updated");
     };
 
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this income?")) return;
         await api.delete(`/income/${id}`);
+        notifySuccess("Income deleted");
         loadIncome();
     };
 

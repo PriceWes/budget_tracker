@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import api from "../services/api";
+import {
+    notifyError,
+    notifyInfo,
+    notifySuccess,    
+} from "../utils/toast";
 
 export default function Expense() {
     const [expenses, setExpenses] = useState([]);
@@ -73,9 +78,10 @@ export default function Expense() {
             }
 
             resetForm();
+            notifySuccess("Expense added Successfully");
             loadExpense();
         } catch (error) {
-            alert(error.response?.data?.message || "OPeration failed");
+            notifyError(error.response?.data?.message || "OPeration failed");
         }
     };
 
@@ -87,11 +93,13 @@ export default function Expense() {
             amount: expense.amount,
             description: expense.description || "",
         });
+        notifyInfo("Expense updated");
     };
 
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this expense?")) return;
         await api.delete(`/expenses/${id}`);
+        notifySuccess("Expense deleted");
         loadExpense();
     };
 

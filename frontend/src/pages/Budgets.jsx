@@ -1,6 +1,11 @@
 import { useEffect, useState} from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import api from "../services/api";
+import {
+    notifySuccess,
+    notifyError,
+    notifyInfo,
+} from "../utils/toast";
 
 export default function Budget() {
     const [budgets, setBudgets] = useState([]);
@@ -53,8 +58,9 @@ export default function Budget() {
             resetForm();
             loadBudgets();
             loadAnalysis();
+            notifySuccess("Budget created");
         } catch (error) {
-            alert(error.response?.data?.message || "Operation failed");
+            notifyError(error.response?.data?.message || "Operation failed");
         }
     };
 
@@ -66,6 +72,7 @@ export default function Budget() {
             month: budget.month,
             year: budget.year,
         });
+        notifyInfo("Budget updated");
     };
 
     const handleDelete = async (id) => {
@@ -74,8 +81,9 @@ export default function Budget() {
             await api.delete(`/budgets/${id}`);
             loadBudgets();
             loadAnalysis();
+            notifySuccess("Budget deleted");
         } catch (error) {
-            alert(error.response?.data?.message || "Delete failed");
+            notifyError(error.response?.data?.message || "Delete failed");
         }
     };
 

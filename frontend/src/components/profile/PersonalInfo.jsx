@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
+import {
+    notifySuccess,
+    notifyError,
+} from "../utils/toast";
 
 export default function PersonalInfo() {
     const { user, updateUser } = useAuth();
@@ -57,10 +61,10 @@ export default function PersonalInfo() {
                 updateUser(res.data);
             }
 
-            alert("Profile updated successfully");
+            notifySuccess("Profile updated successfully");
 
         } catch (error) {
-            alert(
+            notifyError(
                 error.response?.data?.message ||
                 "Failed to update profile"
             );
