@@ -63,3 +63,23 @@ export const changePassword = async(
         },
     });
 };
+
+export const getStatistics = async (userId) => {
+    const income = await prisma.income.count({
+        where: { userId },
+    });
+
+    const expense = await prisma.expense.count({
+        where: { userId },
+    });
+
+    const budgets = await prisma.budget.count({
+        where: { userId },
+    });
+
+    return {
+        income,
+        expense,
+        budgets,
+    };
+};

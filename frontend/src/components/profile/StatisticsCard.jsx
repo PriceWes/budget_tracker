@@ -14,28 +14,34 @@ export default function StatisticsCard() {
 
     const loadStats = async () => {
         try {
-            const res = await api.get("/users/statistics");
-            setStats(res.data);
+            const res = await api.get("/profile/statistics");
+
+            setStats({
+                income: res.data.income,
+                expense: res.data.expense,
+                budgets: res.data.budgets,
+            });
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     return (
         <div className="statistics-card">
             <h2>Account Statistics</h2>
+
             <p>
-                Income Records:
+                Income Records:{" "}
                 <strong>{stats.income}</strong>
             </p>
 
             <p>
-                Expense Records:
+                Expense Records:{" "}
                 <strong>{stats.expense}</strong>
             </p>
 
             <p>
-                Budgets:
+                Budgets:{" "}
                 <strong>{stats.budgets}</strong>
             </p>
         </div>

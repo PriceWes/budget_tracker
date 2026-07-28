@@ -1,16 +1,40 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
 import api from "../../services/api";
 
 export default function PersonalInfo() {
-    const { user} = useAuth();
+    const { user, updateUser } = useAuth();
 
     const [form, setForm] = useState({
-        fullName: user?.fullName || "",
-        email: user?.email || "",
-        phone: user?.phone || "",
-        currency: user?.currency || "KES",
+        fullName: "",
+        email: "",
+        phone: "",
+        currency: "KES",
     });
+
+    useEffect(() => {
+        loadProfile();
+    }, []);
+
+    const loadProfile = async () => {
+        try {
+            const res = await api.get("/profile");
+
+            setForm({
+                fullName: res.data.fullName || "",
+                email: res.data.email || "",
+                phone: res.data.phone || "",
+                currency: res.data.currency || "KES",
+            });
+
+            if (updateUser) {
+                updateUser(res.data);
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleChange = (e) => {
         setForm({
@@ -21,11 +45,25 @@ export default function PersonalInfo() {
 
     const save = async (e) => {
         e.preventDefault();
+
         try {
-            await api.put("/users/profile", form);
-            alert("Profile updated");
+            const res = await api.put("/profile", {
+                fullName: form.fullName,
+                phone: form.phone,
+                currency: form.currency,
+            });
+
+            if (updateUser) {
+                updateUser(res.data);
+            }
+
+            alert("Profile updated successfully");
+
         } catch (error) {
-            alert(error.response?.data?.message);
+            alert(
+                error.response?.data?.message ||
+                "Failed to update profile"
+            );
         }
     };
 
@@ -34,11 +72,10 @@ export default function PersonalInfo() {
             className="profile-form"
             onSubmit={save}
         >
-            <h2>
-                Personal Information
-            </h2>
+            <h2>Personal Information</h2>
 
             <input
+                type="text"
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
@@ -46,17 +83,18 @@ export default function PersonalInfo() {
             />
 
             <input
+                type="email"
                 name="email"
                 value={form.email}
-                onChange={handleChange}
-                placeholder="Email"
+                disabled
             />
 
             <input
-             name="phone"
-             value={form.phone}
-             onChange={handleChange}
-             placeholder="Phone Number"
+                type="text"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="Phone Number"
             />
 
             <select
@@ -69,7 +107,7 @@ export default function PersonalInfo() {
                 <option value="EUR">EUR</option>
             </select>
 
-            <button>
+            <button type="submit">
                 Save Changes
             </button>
         </form>

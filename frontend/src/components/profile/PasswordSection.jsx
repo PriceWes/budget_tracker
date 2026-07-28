@@ -25,10 +25,18 @@ export default function PasswordSection() {
 
         try {
             await api.put(
-                "/users/change-password",
-                passwords
+                "/profile/password",{
+                    currentPassword: passwords.currentPassword,
+                    newPassword: passwords.newPassword,
+                }
             );
-            alert("Password changed");
+            alert("Password changed successfully");
+
+            setPasswords({
+                currentPassword: "",
+                newPassword: "",
+                confirmPassword: "",
+            })
         } catch (error) {
             alert(error.response?.data?.message);
         }
@@ -43,6 +51,7 @@ export default function PasswordSection() {
             <input
                 type="password"
                 name="currentPassword"
+                value={passwords.currentPassword}
                 placeholder="Current Password"
                 onChange={handleChange}
             />
@@ -50,6 +59,7 @@ export default function PasswordSection() {
             <input
                 type="password"
                 name="newPassword"
+                value={passwords.newPassword}
                 placeholder="New Password"
                 onChange={handleChange}
             />
@@ -57,6 +67,7 @@ export default function PasswordSection() {
             <input
                 type="password"
                 name="confirmPassword"
+                value={passwords.confirmPassword}
                 placeholder="Confirm Password"
                 onChange={handleChange}
             />
