@@ -4,7 +4,7 @@ import {
     notifySuccess,
     notifyError,
     notifyWarning,
-} from "../utils/toast";
+} from "../../utils/toast";
 
 export default function PasswordSection() {
     const [passwords, setPasswords] = useState({

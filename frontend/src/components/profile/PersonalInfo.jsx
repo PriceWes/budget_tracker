@@ -4,7 +4,7 @@ import api from "../../services/api";
 import {
     notifySuccess,
     notifyError,
-} from "../utils/toast";
+} from "../../utils/toast";
 
 export default function PersonalInfo() {
     const { user, updateUser } = useAuth();
