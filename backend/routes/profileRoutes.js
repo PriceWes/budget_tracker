@@ -6,7 +6,6 @@ import {
     changePassword,
     getStatistics,
 } from "../controllers/profileController.js";
-import { getStatistics } from "../services/profileService.js";
 
 const router = express.Router();
 
