@@ -18,6 +18,10 @@ model User {
   email String @unique
   password String
 
+  hone String?
+  currency String @default("KES")
+  profileImage String?
+
   incomes Income[]
   expenses Expense[]
   budgets Budget[]

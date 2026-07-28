@@ -3,6 +3,7 @@ import ProfileCard from "../components/profile/ProfileCard";
 import PersonalInfo from "../components/profile/PersonalInfo";
 import PasswordSection from "../components/profile/PasswordSection";
 import StatisticsCard from "../components/profile/StatisticsCard";
+import { useEffect } from "react";
 
 
 export default function Profile() {
