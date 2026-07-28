@@ -47,7 +47,7 @@ export const getReportSummary = async (userId, month, year) => {
     );
 
     const totalExpense = expenses.reduce(
-        (sum, item) => + item.amount,
+        (sum, item) =>sum + item.amount,
         0
     );
 
